@@ -1,75 +1,93 @@
-# React + TypeScript + Vite
+# CP360 React Big Calendar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A brief description of your project.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1.  **Clone the repository:**
 
-## React Compiler
+    ```bash
+    git clone https://github.com/JOY-SAM/cp360.git
+    cd cp360/react
+    ```
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+2.  **Install dependencies:**
 
-Note: This will impact Vite dev & build performances.
+    ```bash
+    npm install
+    ```
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Development
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To run the application in development mode:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This will start a development server, and you can usually access the application at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Build
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To build the application for production:
+
+```bash
+npm run build
+```
+
+This will compile the TypeScript code and bundle the assets into the `dist` directory.
+
+### Lint
+
+To lint the codebase:
+
+```bash
+npm run lint
+```
+
+### Preview
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Technologies Used
+
+*   React
+*   TypeScript
+*   Vite
+*   Redux Toolkit
+*   Tailwind CSS
+*   date-fns
+*   react-big-calendar
+*   recharts
+
+## Project Structure
+
+```
+.
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   └── BarGraph.tsx
+│   ├── redux/
+│   │   ├── hooks.ts
+│   │   ├── slices/
+│   │   │   └── calendarSlice.ts
+│   │   └── store.ts
+│   ├── utils/
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+├── .eslintrc.cjs
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
