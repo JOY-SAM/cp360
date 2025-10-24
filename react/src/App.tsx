@@ -9,6 +9,7 @@ import {getDay} from 'date-fns/getDay'
 import {enUS} from 'date-fns/locale/en-US'
 import BarGraph from './components/BarGraph';
 import { useAppSelector, useAppDispatch } from './redux/hooks';
+import { createSelector } from '@reduxjs/toolkit';
 import {
   setDate,
   setView,
@@ -16,6 +17,7 @@ import {
   setShowPopup,
   setPopupData,
   setShowNoDataPopup,
+  type TransformedCalendarEvent, // Import the interface
 } from './redux/slices/calendarSlice';
 
 const localizer = dateFnsLocalizer({
@@ -28,17 +30,31 @@ const localizer = dateFnsLocalizer({
   },
 })
 
-const App = (props:any) => {
-  const dispatch = useAppDispatch();
-  const { date, view, selectedDate, showPopup, popupData, showNoDataPopup, calendarEvents } = useAppSelector((state) => state.calendar);
+const selectCalendarEvents = createSelector(
+  (state) => state.calendar.calendarEvents,
+  (calendarEvents) =>
+    calendarEvents.map((event: TransformedCalendarEvent) => ({
+      ...event,
+      start: new Date(event.start),
+      end: new Date(event.end),
+    }))
+);
 
-  const handleSelectEvent = (event: any) => {
+const App = () => {
+  const dispatch = useAppDispatch();
+  const { date, view, selectedDate, showPopup, popupData, showNoDataPopup } = useAppSelector((state) => state.calendar);
+
+  const calendarEvents: TransformedCalendarEvent[] = useAppSelector(selectCalendarEvents);
+
+  const handleSelectEvent = (event: TransformedCalendarEvent) => {
     const dateEvents = calendarEvents.filter(
       (dataEvent) => dataEvent.start.toDateString() === event.start.toDateString()
     );
 
     if (dateEvents.length > 0) {
-      const formattedData = dateEvents.map(ev => ({ [ev.title]: ev.value }));
+      const formattedData = dateEvents.map((ev) => ({
+          [ev.title]: ev.value
+        }));
       dispatch(setPopupData(formattedData));
       dispatch(setShowPopup(true));
       dispatch(setShowNoDataPopup(false));
@@ -47,10 +63,10 @@ const App = (props:any) => {
       dispatch(setShowPopup(false));
       dispatch(setPopupData(null));
     }
-    dispatch(setSelectedDate(event.start));
+    dispatch(setSelectedDate(event.start.toISOString()));
   };
 
-  const eventPropGetter = (event: any, start: Date, end: Date, isSelected: boolean) => {
+  const eventPropGetter = (_event: TransformedCalendarEvent, start: Date) => {
     let newStyle = {
       backgroundColor: "#3174ad",
       color: 'black',
@@ -79,7 +95,7 @@ const App = (props:any) => {
         selectable
         onSelectSlot={(slotInfo:any) => {
           const clickedDate = slotInfo.start;
-          dispatch(setSelectedDate(clickedDate));
+          dispatch(setSelectedDate(clickedDate.toISOString()));
           dispatch(setShowPopup(false));
           dispatch(setPopupData(null));
 
@@ -131,4 +147,4 @@ const App = (props:any) => {
     </div>
   );
 };
-export default App
+export default App;

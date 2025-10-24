@@ -4,8 +4,8 @@ import { addDays } from 'date-fns';
 interface CalendarData {
   id: number;
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   value: number;
 }
 
@@ -17,6 +17,14 @@ interface CalendarState {
   popupData: any[] | null;
   showNoDataPopup: boolean;
   calendarEvents: CalendarData[];
+}
+
+export interface TransformedCalendarEvent {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+  value: number;
 }
 
 const dummy_data = {
@@ -62,8 +70,8 @@ const transformDummyData = (data: typeof dummy_data): CalendarData[] => {
         transformedData.push({
           id: idCounter++,
           title: title,
-          start: eventDate,
-          end: addDays(eventDate, 1),
+          start: eventDate.toISOString(),
+          end: addDays(eventDate, 1).toISOString(),
           // @ts-ignore
           value: value ,
         });
@@ -95,8 +103,8 @@ const calendarSlice = createSlice({
     setView: (state, action: PayloadAction<string>) => {
       state.view = action.payload;
     },
-    setSelectedDate: (state, action: PayloadAction<Date | null>) => {
-      state.selectedDate = action.payload ? action.payload.toISOString() : null;
+    setSelectedDate: (state, action: PayloadAction<string | Date | null>) => {
+      state.selectedDate = action.payload ? (typeof action.payload === 'string' ? action.payload : action.payload.toISOString()) : null;
     },
     setShowPopup: (state, action: PayloadAction<boolean>) => {
       state.showPopup = action.payload;
