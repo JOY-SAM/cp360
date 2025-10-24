@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+// @ts-ignore
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
 import {format} from 'date-fns/format'
 import {parse} from 'date-fns/parse'
@@ -50,7 +51,7 @@ const localizer = dateFnsLocalizer({
 })
 
 const App = (props:any) => (
-  <div>
+  <div className='py-20'>
     <Calendar
       localizer={localizer}
       events={[]}
